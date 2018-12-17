@@ -7,7 +7,7 @@ import org.davidd.menu.MainApplication
 import org.davidd.menu.model.Order
 import org.davidd.menu.model.Orders
 
-class SharedPreferencesDataService() : DataService {
+class SharedPreferencesDataService : DataService {
 
     private val KEY: String = "ORDERS"
     private val context: Context = MainApplication.applicationContext()

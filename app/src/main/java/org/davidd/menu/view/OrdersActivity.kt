@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -13,6 +14,9 @@ import org.davidd.menu.R
 import org.davidd.menu.model.Orders
 import org.davidd.menu.viewmodel.OrdersViewModel
 
+/**
+ * hey {@see ViewModel}
+ */
 class OrdersActivity : AppCompatActivity(), Observer<Orders> {
 
     private lateinit var ordersViewModel: OrdersViewModel
@@ -37,6 +41,16 @@ class OrdersActivity : AppCompatActivity(), Observer<Orders> {
         ordersViewModel = ViewModelProviders.of(this, ViewModelProvider.AndroidViewModelFactory.getInstance(application)).get(OrdersViewModel::class.java)
     }
 
+    override fun onStop() {
+        Log.d("asd", "onStop")
+        super.onStop()
+    }
+
+    override fun onDestroy() {
+        Log.d("asd", "onDestroy")
+        super.onDestroy()
+    }
+
     override fun onResume() {
         super.onResume()
 
@@ -44,12 +58,15 @@ class OrdersActivity : AppCompatActivity(), Observer<Orders> {
     }
 
     override fun onChanged(t: Orders?) {
+        Log.d("asd", "onChanged")
+
         if (t == null) {
             return
         }
 
         var text = ""
 
+        // todo  Caused by: java.util.ConcurrentModificationException
         for (i in t.orders) {
             text += i.id.toString() + " "
         }

@@ -9,6 +9,7 @@ import org.davidd.menu.model.Orders
 
 /**
  * Creates LiveData intance and fetches / updates data from service / DB.
+ * todo remove livedata
  */
 class OrdersRepo private constructor(private val dataService: DataService) {
 
