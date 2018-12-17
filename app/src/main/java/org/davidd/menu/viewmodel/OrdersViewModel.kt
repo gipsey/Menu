@@ -10,21 +10,28 @@ import org.davidd.menu.repo.OrdersRepo
 
 class OrdersViewModel(private val ordersRepo: OrdersRepo) : ViewModel() {
 
+    companion object {
+        private val TAG = OrdersViewModel::class.java.simpleName
+    }
+
     private val ordersLiveData: MutableLiveData<Orders>
 
     init {
-        Log.d("view model", "init - not called at config change")
+        Log.d(TAG, "init")
+
         ordersLiveData = ordersRepo.getOrders()
         ordersRepo.fetchOrders()
     }
 
     fun getOrders(): LiveData<Orders> {
-        Log.d("view model", "getOrders")
+        Log.d(TAG, "getOrders")
+
         return ordersLiveData
     }
 
     fun addNewOrder(orderName: Int) {
-        Log.d("view model", "addNewOrder")
+        Log.d(TAG, "addNewOrder")
+
         ordersRepo.addNewOrder(Order(orderName, orderName.toString()))
     }
 }

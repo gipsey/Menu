@@ -18,6 +18,10 @@ import org.davidd.menu.viewmodel.OrdersViewModelFactory
 
 class OrdersActivity : AppCompatActivity(), Observer<Orders> {
 
+    companion object {
+        private val TAG = OrdersActivity::class.java.simpleName
+    }
+
     private lateinit var ordersViewModel: OrdersViewModel
     private lateinit var ordersListTextView: TextView
 
@@ -42,16 +46,6 @@ class OrdersActivity : AppCompatActivity(), Observer<Orders> {
         ordersViewModel = ViewModelProviders.of(this, OrdersViewModelFactory(ordersRepo)).get(OrdersViewModel::class.java)
     }
 
-    override fun onStop() {
-        Log.d("asd", "onStop")
-        super.onStop()
-    }
-
-    override fun onDestroy() {
-        Log.d("asd", "onDestroy")
-        super.onDestroy()
-    }
-
     override fun onResume() {
         super.onResume()
 
@@ -59,7 +53,7 @@ class OrdersActivity : AppCompatActivity(), Observer<Orders> {
     }
 
     override fun onChanged(t: Orders?) {
-        Log.d("asd", "onChanged")
+        Log.d(TAG, "onChanged")
 
         if (t == null) {
             return

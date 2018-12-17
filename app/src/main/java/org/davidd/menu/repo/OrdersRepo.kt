@@ -6,6 +6,7 @@ import org.davidd.menu.data.DataService
 import org.davidd.menu.data.DataServiceCallback
 import org.davidd.menu.model.Order
 import org.davidd.menu.model.Orders
+import org.davidd.menu.view.OrdersActivity
 
 /**
  * Creates LiveData intance and fetches / updates data from service / DB.
@@ -16,35 +17,35 @@ class OrdersRepo private constructor(private val dataService: DataService) {
     private val ordersLiveData: MutableLiveData<Orders> = MutableLiveData()
 
     fun getOrders(): MutableLiveData<Orders> {
-        Log.d("repo", "getOrders")
+        Log.d(TAG, "getOrders")
         return ordersLiveData
     }
 
     fun fetchOrders() {
-        Log.d("repo", "fetchOrders")
+        Log.d(TAG, "fetchOrders")
 
         dataService.getOrders(object : DataServiceCallback<Orders> {
             override fun onLoadFailed() {
-                Log.d("repo", "fetchOrders fail")
+                Log.d(TAG, "fetchOrders fail")
             }
 
             override fun onLoadSucceeded(data: Orders) {
-                Log.d("repo", "fetchOrders success")
+                Log.d(TAG, "fetchOrders success")
                 ordersLiveData.postValue(data)
             }
         })
     }
 
     fun addNewOrder(order: Order) {
-        Log.d("repo", "addNewOrder")
+        Log.d(TAG, "addNewOrder")
 
         dataService.addOrder(order, object : DataServiceCallback<Unit> {
             override fun onLoadFailed() {
-                Log.d("repo", "addNewOrder fail")
+                Log.d(TAG, "addNewOrder fail")
             }
 
             override fun onLoadSucceeded(data: Unit) {
-                Log.d("repo", "addNewOrder success")
+                Log.d(TAG, "addNewOrder success")
 
                 val orders = ordersLiveData.value!!
                 orders.orders.add(order)
@@ -56,6 +57,7 @@ class OrdersRepo private constructor(private val dataService: DataService) {
 
     companion object {
 
+        private val TAG = OrdersActivity::class.java.simpleName
         private var ins: OrdersRepo? = null
 
         fun getInstance(dataService: DataService): OrdersRepo {
