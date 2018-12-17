@@ -2,8 +2,6 @@ package org.davidd.menu.common
 
 import android.app.Application
 import android.content.Context
-import android.content.Intent
-import org.davidd.menu.repo.OrdersFetcherService
 
 class MainApplication : Application() {
 
@@ -13,9 +11,6 @@ class MainApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-
-        val intent = Intent(this, OrdersFetcherService::class.java)
-        startService(intent)
     }
 
     companion object {

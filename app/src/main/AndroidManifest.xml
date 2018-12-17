@@ -24,9 +24,6 @@
             </intent-filter>
         </activity>
 
-        <service
-            android:name=".repo.OrdersFetcherService"
-            android:exported="false"/>
     </application>
 
 </manifest>
