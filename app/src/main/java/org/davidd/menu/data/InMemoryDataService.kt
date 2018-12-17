@@ -4,7 +4,7 @@ import org.davidd.menu.model.Order
 import org.davidd.menu.model.Orders
 import java.util.*
 
-class InMemoryDataService : DataService {
+object InMemoryDataService : DataService {
 
     private val ordersObject = Orders(ArrayList())
 

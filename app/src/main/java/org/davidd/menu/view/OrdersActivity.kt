@@ -42,7 +42,7 @@ class OrdersActivity : AppCompatActivity(), Observer<Orders> {
 
         ordersListTextView = findViewById(R.id.orders_list)
 
-        val ordersRepo: OrdersRepo = OrdersRepo.getInstance(InMemoryDataService())
+        val ordersRepo: OrdersRepo = OrdersRepo.getInstance(InMemoryDataService)
         ordersViewModel = ViewModelProviders.of(this, OrdersViewModelFactory(ordersRepo)).get(OrdersViewModel::class.java)
     }
 
