@@ -8,15 +8,16 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_orders.*
 import org.davidd.menu.R
 import org.davidd.menu.data.InMemoryDataService
+import org.davidd.menu.data.SharedPreferencesDataService
 import org.davidd.menu.model.Orders
-import org.davidd.menu.repo.OrdersRepo
 import org.davidd.menu.viewmodel.OrdersViewModel
 import org.davidd.menu.viewmodel.OrdersViewModelFactory
 
-class OrdersActivity : AppCompatActivity(), Observer<Orders> {
+class OrdersActivity : AppCompatActivity() {
 
     companion object {
         private val TAG = OrdersActivity::class.java.simpleName
@@ -34,38 +35,29 @@ class OrdersActivity : AppCompatActivity(), Observer<Orders> {
         val addOrderButton = findViewById<Button>(R.id.add_order)
 
         addOrderButton.setOnClickListener {
-            val text = orderIdEditText.text.toString()
-            ordersViewModel.addNewOrder(text.toInt())
-
-            orderIdEditText.text = null
+            ordersViewModel.addNewOrder(orderIdEditText.text.toString())
         }
 
         ordersListTextView = findViewById(R.id.orders_list)
 
-        val ordersRepo: OrdersRepo = OrdersRepo.getInstance(InMemoryDataService)
-        ordersViewModel = ViewModelProviders.of(this, OrdersViewModelFactory(ordersRepo)).get(OrdersViewModel::class.java)
-    }
+        ordersViewModel = ViewModelProviders.of(this, OrdersViewModelFactory(InMemoryDataService)).get(OrdersViewModel::class.java)
+        ordersViewModel.getOrdersLiveData().observe(this, Observer<Orders> { t ->
+            Log.d(TAG, "onChanged")
+            orderIdEditText.text = null
 
-    override fun onResume() {
-        super.onResume()
+            if (t != null) {
+                var text = ""
 
-        ordersViewModel.getOrders().observe(this, this)
-    }
+                for (i in t.orders) {
+                    text += i.id.toString() + " "
+                }
 
-    override fun onChanged(t: Orders?) {
-        Log.d(TAG, "onChanged")
+                ordersListTextView.text = text
+            }
+        })
 
-        if (t == null) {
-            return
-        }
-
-        var text = ""
-
-        // todo  Caused by: java.util.ConcurrentModificationException
-        for (i in t.orders) {
-            text += i.id.toString() + " "
-        }
-
-        ordersListTextView.text = text
+        ordersViewModel.getMessageLiveData().observe(this, Observer<String> { s ->
+            Toast.makeText(this, s, Toast.LENGTH_LONG).show()
+        })
     }
 }

@@ -1,36 +1,64 @@
 package org.davidd.menu.viewmodel
 
 import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import android.text.TextUtils
 import android.util.Log
+import org.davidd.menu.data.DataService
+import org.davidd.menu.data.DataServiceCallback
 import org.davidd.menu.model.Order
 import org.davidd.menu.model.Orders
-import org.davidd.menu.repo.OrdersRepo
 
-class OrdersViewModel(private val ordersRepo: OrdersRepo) : ViewModel() {
+class OrdersViewModel(private val dataService: DataService) : ViewModel() {
 
     companion object {
         private val TAG = OrdersViewModel::class.java.simpleName
     }
 
-    private val ordersLiveData: LiveData<Orders>
+    private val ordersLiveData: MutableLiveData<Orders> = MutableLiveData()
+    private val messageLiveData: MutableLiveData<String> = MutableLiveData()
 
     init {
         Log.d(TAG, "init")
+        dataService.getOrders(object : DataServiceCallback<Orders> {
+            override fun onLoadFailed() {
+                messageLiveData.postValue("preparing orders failed")
+            }
 
-        ordersLiveData = ordersRepo.getOrdersLiveData()
-        ordersRepo.fetchOrders()
+            override fun onLoadSucceeded(data: Orders) {
+                ordersLiveData.postValue(data)
+            }
+        })
     }
 
-    fun getOrders(): LiveData<Orders> {
-        Log.d(TAG, "getOrdersLiveData")
-
+    fun getOrdersLiveData(): LiveData<Orders> {
         return ordersLiveData
     }
 
-    fun addNewOrder(orderName: Int) {
-        Log.d(TAG, "addNewOrder")
+    fun getMessageLiveData(): LiveData<String> {
+        return messageLiveData
+    }
 
-        ordersRepo.addNewOrder(Order(orderName, orderName.toString()))
+    fun addNewOrder(orderName: String) {
+        if (TextUtils.isEmpty(orderName)) {
+            messageLiveData.postValue("invalid order id")
+            return
+        }
+
+        val order = Order(orderName.toInt(), orderName)
+
+        dataService.addOrder(order, object : DataServiceCallback<Unit> {
+            override fun onLoadFailed() {
+                messageLiveData.postValue("creation of order failed")
+            }
+
+            override fun onLoadSucceeded(data: Unit) {
+                val value = ordersLiveData.value!!
+                value.orders.add(order)
+
+                ordersLiveData.postValue(value)
+            }
+        })
     }
 }
