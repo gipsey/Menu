@@ -1,7 +1,6 @@
 package org.davidd.menu.view
 
 import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -11,12 +10,12 @@ import android.widget.EditText
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_orders.*
 import org.davidd.menu.R
+import org.davidd.menu.data.InMemoryDataService
 import org.davidd.menu.model.Orders
+import org.davidd.menu.repo.OrdersRepo
 import org.davidd.menu.viewmodel.OrdersViewModel
+import org.davidd.menu.viewmodel.OrdersViewModelFactory
 
-/**
- * hey {@see ViewModel}
- */
 class OrdersActivity : AppCompatActivity(), Observer<Orders> {
 
     private lateinit var ordersViewModel: OrdersViewModel
@@ -38,7 +37,9 @@ class OrdersActivity : AppCompatActivity(), Observer<Orders> {
         }
 
         ordersListTextView = findViewById(R.id.orders_list)
-        ordersViewModel = ViewModelProviders.of(this, ViewModelProvider.AndroidViewModelFactory.getInstance(application)).get(OrdersViewModel::class.java)
+
+        val ordersRepo: OrdersRepo = OrdersRepo.getInstance(InMemoryDataService())
+        ordersViewModel = ViewModelProviders.of(this, OrdersViewModelFactory(ordersRepo)).get(OrdersViewModel::class.java)
     }
 
     override fun onStop() {

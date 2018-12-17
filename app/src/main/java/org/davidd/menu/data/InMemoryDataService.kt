@@ -6,7 +6,7 @@ import java.util.*
 
 class InMemoryDataService : DataService {
 
-    private val ordersObject: Orders = Orders(ArrayList())
+    private val ordersObject = Orders(ArrayList())
 
     override fun addOrder(order: Order, callback: DataServiceCallback<Unit>) {
         Thread.sleep(2000)

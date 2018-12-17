@@ -1,11 +1,10 @@
-package org.davidd.menu
+package org.davidd.menu.common
 
 import android.app.Application
 import android.content.Context
 import android.content.Intent
-import org.davidd.menu.data.api.OrdersFetcherService
+import org.davidd.menu.repo.OrdersFetcherService
 
-// Not object class. AndroidManifest.xml error happen.
 class MainApplication : Application() {
 
     init {

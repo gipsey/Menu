@@ -1,11 +1,10 @@
-package org.davidd.menu.data.api
+package org.davidd.menu.repo
 
 import android.app.IntentService
 import android.content.Intent
+import org.davidd.menu.common.generateOrderId
 import org.davidd.menu.data.SharedPreferencesDataService
-import org.davidd.menu.generateOrderId
 import org.davidd.menu.model.Order
-import org.davidd.menu.repo.OrdersRepo
 
 class OrdersFetcherService : IntentService("OrdersFetcherService") {
 

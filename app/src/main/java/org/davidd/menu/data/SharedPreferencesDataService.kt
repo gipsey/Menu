@@ -1,16 +1,15 @@
 package org.davidd.menu.data
 
-import android.content.Context
 import android.preference.PreferenceManager
 import com.google.gson.Gson
-import org.davidd.menu.MainApplication
+import org.davidd.menu.common.MainApplication
 import org.davidd.menu.model.Order
 import org.davidd.menu.model.Orders
 
 class SharedPreferencesDataService : DataService {
 
-    private val KEY: String = "ORDERS"
-    private val context: Context = MainApplication.applicationContext()
+    private val KEY = "ORDERS"
+    private val context = MainApplication.applicationContext()
 
     override fun addOrder(order: Order, callback: DataServiceCallback<Unit>) {
         val newOrdersList = ArrayList<Order>()
