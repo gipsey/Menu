@@ -1,7 +1,6 @@
 package org.davidd.menu.viewmodel
 
 import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.util.Log
 import org.davidd.menu.model.Order
@@ -14,17 +13,17 @@ class OrdersViewModel(private val ordersRepo: OrdersRepo) : ViewModel() {
         private val TAG = OrdersViewModel::class.java.simpleName
     }
 
-    private val ordersLiveData: MutableLiveData<Orders>
+    private val ordersLiveData: LiveData<Orders>
 
     init {
         Log.d(TAG, "init")
 
-        ordersLiveData = ordersRepo.getOrders()
+        ordersLiveData = ordersRepo.getOrdersLiveData()
         ordersRepo.fetchOrders()
     }
 
     fun getOrders(): LiveData<Orders> {
-        Log.d(TAG, "getOrders")
+        Log.d(TAG, "getOrdersLiveData")
 
         return ordersLiveData
     }

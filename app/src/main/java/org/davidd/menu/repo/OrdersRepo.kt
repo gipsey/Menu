@@ -1,5 +1,6 @@
 package org.davidd.menu.repo
 
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.util.Log
 import org.davidd.menu.data.DataService
@@ -10,14 +11,13 @@ import org.davidd.menu.view.OrdersActivity
 
 /**
  * Creates LiveData intance and fetches / updates data from service / DB.
- * todo remove livedata
  */
 class OrdersRepo private constructor(private val dataService: DataService) {
 
     private val ordersLiveData: MutableLiveData<Orders> = MutableLiveData()
 
-    fun getOrders(): MutableLiveData<Orders> {
-        Log.d(TAG, "getOrders")
+    fun getOrdersLiveData(): LiveData<Orders> {
+        Log.d(TAG, "getOrdersLiveData")
         return ordersLiveData
     }
 
