@@ -56,7 +56,7 @@ class OrdersViewModel(private val dataService: DataService) : ViewModel() {
 
             override fun onLoadSucceeded(data: Unit) {
                 var value = ordersLiveData.value!!
-                value = "$value$order\n"
+                value = "$value${order.id}\n"
 
                 ordersLiveData.postValue(value)
             }
