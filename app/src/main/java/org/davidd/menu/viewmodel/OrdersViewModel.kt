@@ -16,7 +16,7 @@ class OrdersViewModel(private val dataService: DataService) : ViewModel() {
         private val TAG = OrdersViewModel::class.java.simpleName
     }
 
-    private val ordersLiveData: MutableLiveData<Orders> = MutableLiveData()
+    private val ordersLiveData: MutableLiveData<String> = MutableLiveData()
     private val messageLiveData: MutableLiveData<String> = MutableLiveData()
 
     init {
@@ -27,12 +27,13 @@ class OrdersViewModel(private val dataService: DataService) : ViewModel() {
             }
 
             override fun onLoadSucceeded(data: Orders) {
-                ordersLiveData.postValue(data)
+                val text = prepareOrdersText(data)
+                ordersLiveData.postValue(text)
             }
         })
     }
 
-    fun getOrdersLiveData(): LiveData<Orders> {
+    fun getOrdersLiveData(): LiveData<String> {
         return ordersLiveData
     }
 
@@ -54,11 +55,20 @@ class OrdersViewModel(private val dataService: DataService) : ViewModel() {
             }
 
             override fun onLoadSucceeded(data: Unit) {
-                val value = ordersLiveData.value!!
-                value.orders.add(order)
+                var value = ordersLiveData.value!!
+                value = "$value$order\n"
 
                 ordersLiveData.postValue(value)
             }
         })
+    }
+
+    private fun prepareOrdersText(data: Orders): String {
+        var text = ""
+
+        for (i in data.orders) {
+            text += i.id.toString() + "\n"
+        }
+        return text
     }
 }
