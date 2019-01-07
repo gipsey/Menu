@@ -1,9 +1,21 @@
 package org.davidd.menu.common
 
+import android.app.Activity
 import android.app.Application
 import android.content.Context
+import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.HasActivityInjector
+import javax.inject.Inject
 
-class MainApplication : Application() {
+class MainApplication : Application(), HasActivityInjector {
+
+    @Inject
+    lateinit var dispatchingActivityInjector: DispatchingAndroidInjector<Activity>
+
+    override fun activityInjector(): AndroidInjector<Activity> {
+        return dispatchingActivityInjector
+    }
 
     init {
         instance = this
@@ -11,6 +23,9 @@ class MainApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+
+//        DaggerMainApplicationComponent.create()
+//                .inject(this)
     }
 
     companion object {
