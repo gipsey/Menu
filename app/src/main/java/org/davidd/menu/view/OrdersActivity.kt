@@ -23,7 +23,8 @@ class OrdersActivity : DaggerAppCompatActivity() {
 
     @Inject
     lateinit var ordersViewModelFactory: OrdersViewModelFactory
-    lateinit var ordersViewModel: OrdersViewModel
+
+    private lateinit var ordersViewModel: OrdersViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
