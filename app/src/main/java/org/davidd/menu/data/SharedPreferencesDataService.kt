@@ -8,6 +8,7 @@ import kotlinx.coroutines.launch
 import org.davidd.menu.common.MainApplication
 import org.davidd.menu.model.Order
 import org.davidd.menu.model.Orders
+import javax.inject.Inject
 
 object SharedPreferencesDataService : DataService {
 

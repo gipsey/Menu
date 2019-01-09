@@ -5,12 +5,8 @@ import android.app.Application
 import android.content.Context
 import dagger.Component
 import dagger.Module
-import dagger.Provides
 import dagger.android.*
-import org.davidd.menu.data.DataService
-import org.davidd.menu.data.InMemoryDataService
 import org.davidd.menu.view.OrdersActivity
-import org.davidd.menu.viewmodel.OrdersViewModel
 import javax.inject.Inject
 
 class MainApplication : Application(), HasActivityInjector {
@@ -34,7 +30,9 @@ class MainApplication : Application(), HasActivityInjector {
     override fun onCreate() {
         super.onCreate()
 
-        DaggerMainApplicationComponent.create().inject(this)
+        DaggerMainApplicationComponent.builder()
+                .create(this)
+                .inject(this)
     }
 
     @Override
@@ -43,24 +41,31 @@ class MainApplication : Application(), HasActivityInjector {
     }
 }
 
-@Module
-abstract class MainApplicationModule {
-
-    @ContributesAndroidInjector // TODO ???
-    abstract fun contributeActivityInjector(): OrdersActivity
-}
-
 // responsible for injecting the MainApplication class
-@Component(modules = arrayOf(AndroidInjectionModule::class, MainApplicationModule::class, OrdersActivityModule::class))
-interface MainApplicationComponent : AndroidInjector<MainApplication>
+@Component(modules = arrayOf(
+        AndroidInjectionModule::class,
+        ActivityModule::class))
+interface MainApplicationComponent : AndroidInjector<MainApplication> {
 
-@Module
-class OrdersActivityModule(val dataService: DataService = InMemoryDataService) {
-
-    @Provides
-    fun provideOrdersViewModel(): OrdersViewModel {
-//        ordersViewModel = ViewModelProviders.of(this, OrdersViewModelFactory(InMemoryDataService)).get(OrdersViewModel::class.java)
-        return OrdersViewModel(dataService) // TODO this is bad
-    }
+    @Component.Builder
+    abstract class Builder : AndroidInjector.Builder<MainApplication>()
 }
 
+// creates an Injector for specific classes (for the return types used in methods annotated with @ContributesAndroidInjector)
+@Module(includes = [ViewModelModule::class])
+abstract class ActivityModule {
+
+    // use this to avoid IllegalArgumentException: No injector factory bound for Class<org.davidd.menu.view.OrdersActivity>
+    @ContributesAndroidInjector
+    abstract fun contributeOrdersActivityInjector(): OrdersActivity
+}
+
+// TODO why do we need this if we create the specific VM in Activity/Fragment?
+@Module
+abstract class ViewModelModule {
+
+//    // returns the specified instance from parameter
+//    @Binds
+//    @IntoMap
+//    abstract fun provideOrdersViewModel(viewModel: OrdersViewModel): ViewModel
+}
