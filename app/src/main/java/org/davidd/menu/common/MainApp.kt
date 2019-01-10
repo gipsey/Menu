@@ -84,6 +84,9 @@ abstract class BindingModule {
 
 // TODO why do we need this if we create the specific VM in Activity/Fragment?
 // to be injectable in other classes if there was created (create in Activity and inject in separate Fragments ? )
+
+//1. Why do we need ViewModelModule if we create the specific VM in Activity/Fragment?
+//2. Why to store VMs in a map?
 @Module
 abstract class ViewModelModule {
 
