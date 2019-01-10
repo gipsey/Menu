@@ -11,6 +11,7 @@ import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_orders.*
 import kotlinx.android.synthetic.main.content_orders.*
 import org.davidd.menu.R
+import org.davidd.menu.common.ITestClassB
 import org.davidd.menu.common.TestClassA
 import org.davidd.menu.viewmodel.OrdersViewModel
 import org.davidd.menu.viewmodel.OrdersViewModelFactory
@@ -26,6 +27,8 @@ class OrdersActivity : DaggerAppCompatActivity() {
     lateinit var ordersViewModelFactory: OrdersViewModelFactory
     @Inject
     lateinit var testClassA: TestClassA
+    @Inject
+    lateinit var iTestClassB: ITestClassB
 
     private lateinit var ordersViewModel: OrdersViewModel
 
@@ -42,6 +45,7 @@ class OrdersActivity : DaggerAppCompatActivity() {
         }
 
         Log.d("testClassA", testClassA.toString())
+        Log.d("iTestClassB", iTestClassB.toString())
 
         ordersViewModel = ViewModelProviders.of(this, ordersViewModelFactory).get(OrdersViewModel::class.java)
         ordersViewModel.getOrdersLiveData().observe(this, Observer<String> { t ->

@@ -78,11 +78,12 @@ class AppModule {
 abstract class BindingModule {
 
     // use this to avoid IllegalArgumentException: No injector factory bound for Class<org.davidd.menu.view.OrdersActivity>
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = [OrdersActivityModule::class])
     abstract fun contributeOrdersActivityInjector(): OrdersActivity
 }
 
 // TODO why do we need this if we create the specific VM in Activity/Fragment?
+// to be injectable in other classes if there was created (create in Activity and inject in separate Fragments ? )
 @Module
 abstract class ViewModelModule {
 
@@ -94,6 +95,13 @@ abstract class ViewModelModule {
 }
 
 @Module
+abstract class OrdersActivityModule {
+
+    @Binds
+    abstract fun provideTestClassB(testClassB: TestClassB): ITestClassB
+}
+
+@Module
 class TestModule {
 
     @Provides
@@ -101,5 +109,13 @@ class TestModule {
 }
 
 class TestClassA {
+
+}
+
+interface ITestClassB {
+
+}
+
+class TestClassB @Inject constructor(context: Context) : ITestClassB {
 
 }
