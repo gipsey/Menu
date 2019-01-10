@@ -5,10 +5,9 @@ import android.preference.PreferenceManager
 import com.google.gson.Gson
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import org.davidd.menu.common.MainApplication
+import org.davidd.menu.common.MainApp
 import org.davidd.menu.model.Order
 import org.davidd.menu.model.Orders
-import javax.inject.Inject
 
 object SharedPreferencesDataService : DataService {
 
@@ -69,6 +68,6 @@ object SharedPreferencesDataService : DataService {
     }
 
     private fun context(): Context {
-        return MainApplication.applicationContext()
+        return MainApp.applicationContext()
     }
 }
